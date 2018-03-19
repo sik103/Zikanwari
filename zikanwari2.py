@@ -11,32 +11,29 @@ import tkinter.filedialog as tf
 import openpyxl as px
 import zenhan as zh
 
-import pandas as pd
-
-import datetime
+from datetime import datetime
 import re
 import sys
 import time
 import traceback
 
+from getClassroom import GetClassroom
+
 
 class hp2sheet:
     def __init__(self):
-        self.dt = datetime.datetime.today()
+        self.dt = datetime.today()
+        self.gc = GetClassroom(self.dt)
         # self.cell = "{c}{i}" # -> replaced with function
         # Character,Integer
         self.gakki = ""
 
-    def main(self):
-        try:
-            f = open("./univName.txt", "r")
-            self.univname = f.readline().strip()
-            f.close()
-        except:
-            f.close()
-            print("Error: univURL.txt")
-            return 0
+        description = {"courseTitle": "", "courseNo": "", "classroom": ""}
+        one_day = [description for i in range(8)]
+        dow = ["Mon", "Tue", "Wed", "Thu", "Fri"]
+        self.timetable = {dow0: one_day for dow0 in dow}
 
+    def main(self):
         try:    
             print("Please select your file.")
             print("\n")
@@ -185,7 +182,7 @@ class hp2sheet:
             print("Downloading...")
             for i2 in cnolist:  # import html
                 print(ii, "of", iii)
-                croomlist.append(self.findclassroom(i2))
+                croomlist.append(self.gc.getClassroom(i2))
                 time.sleep(2)
                 ii = ii+1
 
@@ -221,56 +218,7 @@ class hp2sheet:
             return False
 
     # download html and return classroom with course No
-    def findclassroom(self, shozoku_jikanwari):
-        try:
-            nendo = self.dt.year
-            if self.dt.month < 4:
-                nendo = nendo-1
-        #    nendo=2017
-            if re.match(r"'.*", shozoku_jikanwari) is not None:
-                shozoku_jikanwari = shozoku_jikanwari.replace("'", "")
 
-            shozoku = shozoku_jikanwari[0:2]
-            jikanwari = shozoku_jikanwari[2:6]
-
-            obj_url = ("https://gs.{uname}.ac.jp/campusweb/campussquare.do?_"
-                       "flowId=SYW4101101-flow&nendo={n}&"
-                       "shozoku={s}&jikanwari={j}"
-                       "&sylocale={lang}").format(uname=self.univname)
-        #    obj_url="/slb_sample.html"
-
-            try:
-                df = pd.io.html.read_html(obj_url.format(
-                    n=nendo, s=shozoku, j=jikanwari, lang="ja_JP"))
-            except:
-                df = pd.io.html.read_html(obj_url.format(
-                    n=nendo, s=shozoku, j=jikanwari, lang="en_US"))
-
-            return self.changeclassroom(df[0][1][6])
-        except:
-            return "error"
-
-    def changeclassroom(self, classroom):
-        if re.match(r".*,.*", classroom) is not None:
-            cr = classroom
-        elif classroom == "工学部１号館情報実習室１（CAE室）":
-            cr = "工1-CAE室"
-        elif re.match(r"一般教育棟.*", classroom) is not None:
-            cr = classroom.replace("一般教育棟", "").replace("教室", "")
-        elif re.match(r"工学部.*", classroom) is not None:
-            cr = classroom.replace('工学部', "工").replace(
-                "号館第", "-").replace("号館", "-").replace("講義室", "")
-        elif re.match(r"情報実習室.*", classroom) is not None:
-            cr = classroom.replace("情報実習室", "情")
-        elif re.match(r"理学部.*", classroom) is not None:
-            cr = classroom.replace("理学部", "理").replace(
-                "号館第", "-").replace("号館", "-").replace("講義室", "")
-        else:
-            cr = classroom
-
-        cr = cr.replace(" ", "")
-
-        return zh.z2h(text=cr, mode=3)
 
     def copy_input_to_temp(self, gakki):
         try:
