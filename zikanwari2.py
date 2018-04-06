@@ -9,29 +9,16 @@ Created on Tue Feb 20 10:34:00 2018
 import tkinter.filedialog as tf
 
 import openpyxl as px
-import zenhan as zh
 
-from datetime import datetime
-import re
-import sys
-import time
-import traceback
-
-from getClassroom import GetClassroom
+from src.copy_tmp2forpdf import copy_tmp_to_forpdf
+from src.copy_input2temp import copy_input_to_temp
+from src.yesno_interface import yesno
+from src.importClassroom import importclassroom
 
 
 class hp2sheet:
     def __init__(self):
-        self.dt = datetime.today()
-        self.gc = GetClassroom(self.dt)
-        # self.cell = "{c}{i}" # -> replaced with function
-        # Character,Integer
-        self.gakki = ""
-
-        description = {"courseTitle": "", "courseNo": "", "classroom": ""}
-        one_day = [description for i in range(8)]
-        dow = ["Mon", "Tue", "Wed", "Thu", "Fri"]
-        self.timetable = {dow0: one_day for dow0 in dow}
+        pass
 
     def main(self):
         print("Please select your file.")
@@ -39,7 +26,7 @@ class hp2sheet:
 
         msg = "Are you sure to change this file?:\n{}"
         if self.openExcel() and \
-                self.yesno(msg.format(self.filename), True):
+                yesno(msg.format(self.filename), True):
             pass  # Ask sure or not to change the file
         else:
             return 0
@@ -48,15 +35,17 @@ class hp2sheet:
         print("The downloaded html table will be converted to simple one.")
         print("If you do NOT want, please press ENTER.")
 
-        if self.copy_input_to_temp(input("Which quoter?(1/2/3/4):")):
+        gakki = copy_input_to_temp(self.filename,
+                                   input("Which quoter?(1/2/3/4):"))
+        if gakki:
             input('\n"temp" will be converted.\n' +
                   "Please check and close your file then press ENTER.:")
         else:
             return 0
 
         msg = "\nDo you want to download classrooms?"
-        if self.copy_tmp_to_forpdf() and self.yesno(msg, False):
-            self.importclassroom()
+        if copy_tmp_to_forpdf(self.filename, gakki) and yesno(msg, False):
+            importclassroom(self.filename)
             # change the file and ask want to download or not
             print("END!!")
         else:
@@ -87,216 +76,7 @@ class hp2sheet:
         finally:
             return hantei
 
-    def copy_tmp_to_forpdf(self):
-        try:
-            wb = px.load_workbook(self.filename)
-
-            ws1 = wb.get_sheet_by_name('ForPDF')
-            ws2 = wb.get_sheet_by_name('temp')
-
-            kogi_bango = ""
-            # cell="{c}{i}"
-            # Character,Integer
-
-            for i in range(66, 71):
-                for j1 in range(2, 17, 2):  # Kougi-bango #write course number
-                    r1 = round(3*j1/2+2)
-                    kogi_bango = ws2[self.cell(c=chr(i), i=j1)].value
-                    if kogi_bango is None:
-                        pass
-                    elif type(kogi_bango) == str:
-                        kogi_bango0 = kogi_bango.split("　", 1)[0].strip()
-                        ws1[self.cell(c=chr(i), i=r1)].value = ""
-                        ws1[self.cell(c=chr(i), i=r1)].value =\
-                            zh.z2h(text=kogi_bango0, mode=7)
-                    elif type(kogi_bango) == int:
-                        kogi_bango0 = "{:06d}".format(kogi_bango)
-                        ws1[self.cell(c=chr(i), i=r1)].value = ""
-                        ws1[self.cell(c=chr(i), i=r1)].value =\
-                            zh.z2h(text=kogi_bango0, mode=7)
-
-                for j2 in range(3, 18, 2):  # write course title
-                    r2 = round(((3*j2+7)/2)-1)
-                    kogi_me = ws2[self.cell(c=chr(i), i=j2)].value
-                    if kogi_me is not None:
-                        kogi_me = kogi_me.replace("－", "-").\
-                            replace("英語コミュニケーション", "EC")
-                        ws1[self.cell(c=chr(i), i=r2)].value = ""
-                        ws1[self.cell(c=chr(i), i=r2)].value =\
-                            zh.z2h(text=kogi_me, mode=3)
-
-            ws1["F2"].value = self.dt.strftime("%Y/%m/%d")
-            if self.gakki != "":
-                ws1["D1"].value = "Q{}".format(self.gakki)
-            wb.save(self.filename)
-            print("Successfully completed")
-            return True
-
-        except PermissionError:
-            print("The file was not closed.")
-            return False
-
-        except:
-            # print("Error")
-            print("Unexpected error:", sys.exc_info())
-            return False
-
-    def importclassroom(self):
-        try:
-            wb = px.load_workbook(self.filename)
-            ws1 = wb.get_sheet_by_name('ForPDF')
-            # self.cell(c=chr(i),i=r1)
-
-            cnobox = [[None for i0 in range(8)] for j0 in range(5)]
-            for i1 in range(5):  # read data from the file
-                for j1 in range(8):
-                    cnobox[i1][j1] =\
-                        ws1[self.cell(c=chr(i1+66), i=3*(j1+2)-1)].value
-
-            cnolist = []
-            for i in range(5):  # table->list
-                for j in range(8):
-                    inlist = False
-                    for k in cnolist:
-                        if cnobox[i][j] == k \
-                          or cnobox[i][j] is None or cnobox[i][j] == "-":
-                            inlist = True
-                            break
-                    if len(cnolist) == 0 and \
-                            (cnobox[i][j] is None or cnobox[i][j] == "-"):
-                        pass
-                    elif inlist is False:
-                        cnolist.append(cnobox[i][j])
-
-            croomlist = []
-            iii = len(cnolist)
-            ii = 1
-            print("Downloading...")
-            for i2 in cnolist:  # import html
-                print(ii, "of", iii)
-                croomlist.append(self.gc.getClassroom(i2))
-                time.sleep(2)
-                ii = ii+1
-
-            for i in range(5):  # list->box
-                for j in range(8):
-                    inlist = False
-                    m = 0
-                    for k in cnolist:
-                        if cnobox[i][j] is not None and cnobox[i][j] == k:
-                            cnobox[i][j] = croomlist[m]
-                            break
-                        m = m+1
-
-            for i1 in range(5):  # write data to the file
-                for j1 in range(8):
-                    if cnobox[i1][j1] is not None:
-                        ws1[self.cell(
-                            c=chr(i1+66), i=3*(j1+2))].value = ""
-                        ws1[self.cell(
-                            c=chr(i1+66), i=3*(j1+2))].value = cnobox[i1][j1]
-
-            wb.save(self.filename)
-            print("Successfully completed")
-            return True
-        except PermissionError:
-            print("Please close the file.")
-            return False
-        except:
-            # print("Error")
-            # print("Unexpected error:", sys.exc_info())
-            print("Unexpected error:", end="")
-            traceback.print_exc()
-            return False
-
-    # download html and return classroom with course No
-
-
-    def copy_input_to_temp(self, gakki):
-        try:
-            wb = px.load_workbook(self.filename)
-
-            ws2 = wb.get_sheet_by_name('temp')
-            ws3 = wb.get_sheet_by_name('input')
-
-            # string=""
-
-            if gakki == "1" or gakki == "3":
-                for i in range(5):
-                    for j in range(8):  # Kougi-bango #write course number
-                        ws2[self.cell(
-                            c=chr(i+66), i=2*(j+1))].value = ""
-                        ws2[self.cell(c=chr(i+66), i=2*(j+1))].value =\
-                            ws3[self.cell(c=chr(i+67), i=8*j+1)].value
-                        ws2[self.cell(
-                            c=chr(i+66), i=2*(j+1)+1)].value = ""
-                        ws2[self.cell(c=chr(i+66), i=2*(j+1)+1)].value =\
-                            ws3[self.cell(c=chr(i+67), i=8*j+2)].value
-                msg = "Successfully completed"
-                self.gakki = gakki
-
-            elif gakki == "2" or gakki == "4":
-                for i in range(5):
-                    for j in range(8):  # Kougi-bango #write course number
-                        ws2[self.cell(
-                            c=chr(i+66), i=2*(j+1))].value = ""
-                        ws2[self.cell(c=chr(i+66), i=2*(j+1))].value =\
-                            ws3[self.cell(c=chr(i+67), i=8*j+3)].value
-                        ws2[self.cell(
-                            c=chr(i+66), i=2*(j+1)+1)].value = ""
-                        ws2[self.cell(c=chr(i+66), i=2*(j+1)+1)].value =\
-                            ws3[self.cell(c=chr(i+67), i=8*j+4)].value
-                msg = "Successfully completed"
-                self.gakki = gakki
-
-            else:
-                msg = 'The sheet "temp" was not changed.'
-
-            wb.save(self.filename)
-            print(msg)
-            return True
-
-        except PermissionError:
-            print("The file was not closed.")
-            return False
-
-        except:
-            print("Error")
-            return False
-
-    def yesno(self, msg, y_n0=None):
-        ans = None
-        while ans is None:
-            if y_n0 is True:
-                ans = True
-                y_n = "[y]"
-            elif y_n0 is False:
-                ans = False
-                y_n = "[n]"
-            elif y_n0 is None:
-                y_n = ""
-            else:
-                raise
-
-            ans0 = input(msg+"(y/n)"+y_n+":")
-            if ans0 == "y":
-                ans = True
-            elif ans0 == "n":
-                ans = False
-            elif ans0 == "":
-                pass
-            else:
-                ans = None
-        return ans
-
-    def cell(self, c, i):
-        return "{c}{i}".format(c=c, i=i)
-
-
-def quick_start():
-    h2s = hp2sheet()
-    h2s.main()
-
 
 if __name__ == "__main__":
-    quick_start()
+    h2s = hp2sheet()
+    h2s.main()

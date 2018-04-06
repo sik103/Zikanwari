@@ -6,7 +6,6 @@ Created on Mon Mar 19 21:33:49 2018
 @author: wincrantu
 """
 
-
 import zenhan as zh
 import pandas as pd
 from re import match
@@ -18,16 +17,16 @@ class GetClassroom:
         if today_datetime.month < 3:
             self.nendo -= 1
 
-    def getClassroom(self, courseNo):  # main
+    def getClassroom(self, courseNo, debug_mode=False):  # main
         courseNo = courseNo.replace("'", "")
 
         try:
             courseNo_int = int(courseNo)
-            courseNo = "{:06%}".format(courseNo_int)
+            courseNo = "{:06d}".format(courseNo_int)
         except ValueError:
             return ""
 
-        if not match(r"{0-9}[6]", courseNo):
+        if not match(r"[0-9]{6}", courseNo):
             return ""
 
         obj_url = ("https://gs.okayama-u.ac.jp/campusweb/campussquare.do?_"
@@ -36,13 +35,20 @@ class GetClassroom:
                    "&sylocale=ja_JP").format(nendo=self.nendo,
                                              shozoku=courseNo[0:2],
                                              jikanwari=courseNo[2:6])
+        if not debug_mode:
+            try:
+                df = pd.read_html(obj_url)
+                return self.changeClassroom(df[0][1][6])
+            except ValueError:
+                print("ValueError: pandas")
+                return ""
+            except OSError:
+                print("OSError: pandas")
+                return ""
 
-        try:
-            df = pd.read_html(obj_url)
-        except ValueError:
-            return ""
-
-        return self.changeClassroom(df[0][1][6])
+        else:
+            df = pd.read_html("../files_for_debug/a.html")
+            return self.changeClassroom(df[0][1][6])
 
     def changeClassroom(self, classroom):
         if match(r".*,.*", classroom):
@@ -65,3 +71,9 @@ class GetClassroom:
         cr = cr.replace(" ", "")
 
         return zh.z2h(text=cr, mode=3)
+
+
+if __name__ == "__main__":
+    from datetime import datetime
+    gc = GetClassroom(datetime.today())
+    print("test:", gc.getClassroom("091217", True))
