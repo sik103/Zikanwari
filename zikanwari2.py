@@ -34,38 +34,32 @@ class hp2sheet:
         self.timetable = {dow0: one_day for dow0 in dow}
 
     def main(self):
-        try:    
-            print("Please select your file.")
-            print("\n")
+        print("Please select your file.")
+        print("\n")
 
-            msg = "Are you sure to change this file?:\n{}"
-            if self.openExcel() and \
-                    self.yesno(msg.format(self.filename), True):
-                pass  # Ask sure or not to change the file
-            else:
-                return 0
-            print("\n")
+        msg = "Are you sure to change this file?:\n{}"
+        if self.openExcel() and \
+                self.yesno(msg.format(self.filename), True):
+            pass  # Ask sure or not to change the file
+        else:
+            return 0
+        print("\n")
 
-            print("The downloaded html table will be converted to simple one.")
-            print("If you do NOT want, please press ENTER.")
+        print("The downloaded html table will be converted to simple one.")
+        print("If you do NOT want, please press ENTER.")
 
-            if self.copy_input_to_temp(input("Which quoter?(1/2/3/4):")):
-                input('\n"temp" will be converted.\n' +
-                      "Please check and close your file then press ENTER.:")
-            else:
-                return 0
-
-            msg = "\nDo you want to download classrooms?"
-            if self.copy_tmp_to_forpdf() and self.yesno(msg, False):
-                self.importclassroom()
-                # change the file and ask want to download or not
-                print("END!!")
-            else:
-                return 0
-        except:
+        if self.copy_input_to_temp(input("Which quoter?(1/2/3/4):")):
+            input('\n"temp" will be converted.\n' +
+                  "Please check and close your file then press ENTER.:")
+        else:
             return 0
 
-        finally:
+        msg = "\nDo you want to download classrooms?"
+        if self.copy_tmp_to_forpdf() and self.yesno(msg, False):
+            self.importclassroom()
+            # change the file and ask want to download or not
+            print("END!!")
+        else:
             return 0
 
     def openExcel(self):
@@ -90,8 +84,6 @@ class hp2sheet:
                 hantei = True
         except PermissionError:
             print("The file was not closed.")
-        except:
-            print("Error")
         finally:
             return hantei
 

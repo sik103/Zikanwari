@@ -18,7 +18,7 @@ class GetClassroom:
         if today_datetime.month < 3:
             self.nendo -= 1
 
-    def getClassroom(self, courseNo):
+    def getClassroom(self, courseNo):  # main
         courseNo = courseNo.replace("'", "")
 
         try:
