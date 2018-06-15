@@ -39,8 +39,8 @@ class conv4jpg:
         try:
             wb = px.load_workbook(self.filename)
 
-            ws4pdf = wb.get_sheet_by_name('ForPDF')
-            ws4jpg = wb.get_sheet_by_name('ForJPG')
+            ws4pdf = wb['ForPDF']
+            ws4jpg = wb['ForJPG']
 
             for i in range(5):
                 for j in range(24):
