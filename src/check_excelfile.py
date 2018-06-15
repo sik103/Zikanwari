@@ -1,0 +1,48 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Fri Jun 15 13:10:45 2018
+
+@author: crantu
+"""
+
+import openpyxl as px
+import tkinter.filedialog as tf
+
+import os
+from os import path
+os.chdir(path.dirname(path.abspath(__file__)))
+
+
+class CheckExcelFile:
+    def __init__(self):
+        pass
+
+    def openExcel(self):
+        try:
+            # root=tkinter.Tk()
+            # root.withdraw()
+
+            fTyp = [('Sheet copied from web site', '*.xlsx')]
+            iDir = ".//"
+
+            filename = tf.askopenfilename(filetypes=fTyp, initialdir=iDir)
+            # hantei = False
+
+            if filename == "":
+                print("The cancel butten was pushed.")
+            else:
+                wb = px.load_workbook(filename)
+                wb.save(filename)
+
+                self.filename = filename
+
+                return True
+        except PermissionError:
+            print("The file was not closed.")
+            return False
+
+
+if __name__ == "__main__":
+    cef = CheckExcelFile()
+    cef.openExcel()

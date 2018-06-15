@@ -5,10 +5,13 @@ Created on Fri Jul 21 08:58:34 2017
 @author: okayama_univ
 """
 
-import tkinter
-from tkinter import filedialog as tkFileDialog
+# import tkinter
+# from tkinter import filedialog as tkFileDialog
 import openpyxl as px
 from src.yesno_interface import yesno
+from src.check_excelfile import CheckExcelFile
+
+cef = CheckExcelFile()
 
 
 class conv4jpg:
@@ -20,40 +23,17 @@ class conv4jpg:
             print("Please select your file.")
             print("\n")
 
-            if self.main0() and \
-                yesno("Are you sure to change this file?:\n"+self.filename,
-                      True):
-                self.main4()  # Ask sure or not to change the file
+            if cef.openExcel():
+                self.filename = cef.filename
+                if yesno("Are you sure to change this file?:\n"+self.filename,
+                         True):
+                    self.main4()  # Ask sure or not to change the file
             else:
                 return 0
         except PermissionError:
             return 0
         finally:
             return 0
-
-    def main0(self):
-        try:
-            root = tkinter.Tk()
-            root.withdraw()
-
-            fTyp = [('Sheet copied that you wnat to convert', '*.xlsx')]
-            iDir = ".//"
-
-            filename = tkFileDialog.askopenfilename(
-                filetypes=fTyp, initialdir=iDir)
-            hantei = False
-
-            if filename == "":
-                print("The cancel butten was pushed.")
-            else:
-                wb = px.load_workbook(filename)
-                wb.save(filename)
-                self.filename = filename
-                hantei = True
-        except PermissionError:
-            print("The file was not closed.")
-        finally:
-            return hantei
 
     def main4(self):
         try:
