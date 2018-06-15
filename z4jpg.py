@@ -39,16 +39,16 @@ class conv4jpg:
         try:
             wb = px.load_workbook(self.filename)
 
-            ws1 = wb.get_sheet_by_name('ForPDF')
-            ws1_2 = wb.get_sheet_by_name('ForJPG')
+            ws4pdf = wb.get_sheet_by_name('ForPDF')
+            ws4jpg = wb.get_sheet_by_name('ForJPG')
 
             for i in range(5):
                 for j in range(24):
-                    ws1_2[chr(i+67)+str(j+6)
-                          ].value = ws1[chr(i+66)+str(j+5)].value
+                    ws4jpg[chr(i+67)+str(j+6)].value\
+                        = ws4pdf[chr(i+66)+str(j+5)].value
 
-            ws1_2["G3"].value = ws1["F2"].value
-            ws1_2["E2"].value = ws1["D1"].value
+            ws4jpg["G3"].value = ws4pdf["F2"].value
+            ws4jpg["E2"].value = ws4pdf["D1"].value
 
             wb.save(self.filename)
             print("Successfully completed")
