@@ -6,10 +6,6 @@ Created on Tue Feb 20 10:34:00 2018
 @author: crantu
 """
 
-import tkinter.filedialog as tf
-
-import openpyxl as px
-
 from src.copy_tmp2forpdf import copy_tmp_to_forpdf
 from src.copy_input2temp import copy_input_to_temp
 from src.yesno_interface import yesno
@@ -54,31 +50,6 @@ class hp2sheet:
             print("END!!")
         else:
             return 0
-
-    def openExcel(self):
-        try:
-            # root=tkinter.Tk()
-            # root.withdraw()
-
-            fTyp = [('Sheet copied from web site', '*.xlsx')]
-            iDir = ".//"
-
-            filename = tf.askopenfilename(filetypes=fTyp, initialdir=iDir)
-            hantei = False
-
-            if filename == "":
-                print("The cancel butten was pushed.")
-            else:
-                wb = px.load_workbook(filename)
-                wb.save(filename)
-
-                self.filename = filename
-
-                hantei = True
-        except PermissionError:
-            print("The file was not closed.")
-        finally:
-            return hantei
 
 
 if __name__ == "__main__":
