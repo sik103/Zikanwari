@@ -7,6 +7,7 @@ Created on Fri Jul 21 08:58:34 2017
 
 import tkinter
 from tkinter import filedialog as tkFileDialog
+from src.yesno_interface import yesno
 
 import openpyxl as px
 
@@ -20,7 +21,7 @@ class conv4jpg:
             print("\n")
             
             if self.main0()==True and \
-            self.yesno("Are you sure to change this file?:\n"+self.filename,True)==True: 
+            yesno("Are you sure to change this file?:\n"+self.filename,True)==True: 
                 self.main4()#Ask sure or not to change the file
             else:
                 return 0
@@ -79,32 +80,7 @@ class conv4jpg:
             
         except:
             print("Error")
-            return False    
-    
-    def yesno(self,msg,y_n0=None):
-        ans=None
-        while ans==None:
-            if y_n0==True:
-                ans=True
-                y_n="[y]"
-            elif y_n0==False:
-                ans=False
-                y_n="[n]"
-            elif y_n0==None:
-                y_n=""
-            else:
-                raise
-                    
-            ans0=input(msg+"(y/n)"+y_n+":")           
-            if ans0=="y":
-                ans=True
-            elif ans0=="n":
-                ans=False
-            elif ans0=="":
-                pass
-            else:
-                ans=None        
-        return ans
+            return False
     
 def quick_start():
     c4j=conv4jpg()
