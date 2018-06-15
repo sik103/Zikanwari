@@ -14,6 +14,9 @@ from src.copy_tmp2forpdf import copy_tmp_to_forpdf
 from src.copy_input2temp import copy_input_to_temp
 from src.yesno_interface import yesno
 from src.importClassroom import importclassroom
+from src.check_excelfile import CheckExcelFile
+
+cef = CheckExcelFile()
 
 
 class hp2sheet:
@@ -25,9 +28,10 @@ class hp2sheet:
         print("\n")
 
         msg = "Are you sure to change this file?:\n{}"
-        if self.openExcel() and \
-                yesno(msg.format(self.filename), True):
-            pass  # Ask sure or not to change the file
+        if cef.openExcel():
+            self.filename = cef.filename
+            if yesno(msg.format(self.filename), True):
+                pass  # Ask sure or not to change the file
         else:
             return 0
         print("\n")
