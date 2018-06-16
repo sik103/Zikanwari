@@ -23,7 +23,7 @@ class CheckExcelFile:
             # root=tkinter.Tk()
             # root.withdraw()
 
-            fTyp = [('Sheet copied from web site', '*.xlsx')]
+            fTyp = [('Okadai Timetable', '*.xlsx')]
             iDir = ".//"
 
             filename = tf.askopenfilename(filetypes=fTyp, initialdir=iDir)
@@ -33,6 +33,10 @@ class CheckExcelFile:
                 print("The cancel butten was pushed.")
             else:
                 wb = px.load_workbook(filename)
+                wb['ForPDF']
+                wb['ForJPG']
+                wb['temp']
+                wb['input']
                 wb.save(filename)
 
                 self.filename = filename
@@ -40,6 +44,9 @@ class CheckExcelFile:
                 return True
         except PermissionError:
             print("The file was not closed.")
+            return False
+        except KeyError:
+            print("The Worksheets were wrong. ")
             return False
 
 
