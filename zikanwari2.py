@@ -26,8 +26,8 @@ class hp2sheet:
         msg = "Are you sure to change this file?:\n{}"
         if cef.openExcel():
             self.filename = cef.filename
-            if yesno(msg.format(self.filename), True):
-                pass  # Ask sure or not to change the file
+            if not yesno(msg.format(self.filename), True):
+                return 0  # Ask sure or not to change the file
         else:
             return 0
         print("\n")
