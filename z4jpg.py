@@ -27,7 +27,7 @@ class conv4jpg:
                 self.filename = cef.filename
                 if yesno("Are you sure to change this file?:\n"+self.filename,
                          True):
-                    self.main4()  # Ask sure or not to change the file
+                    self.copy_wordsheet()  # Ask sure or not to change the file
             else:
                 return 0
         except PermissionError:
@@ -35,7 +35,7 @@ class conv4jpg:
         finally:
             return 0
 
-    def main4(self):
+    def copy_wordsheet(self):
         try:
             wb = px.load_workbook(self.filename)
 
