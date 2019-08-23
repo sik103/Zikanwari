@@ -7,7 +7,8 @@ Created on Fri Jun 15 13:10:45 2018
 """
 
 import openpyxl as px
-import tkinter.filedialog as tf
+import sys
+from pathlib import Path
 
 import os
 from os import path
@@ -19,16 +20,19 @@ class CheckExcelFile:
         pass
 
     def openExcel(self):
-        try:
-            # root=tkinter.Tk()
-            # root.withdraw()
+        if len(sys.argv) == 2:
+            filename = sys.argv[1]
+        else:
+            import tkinter
+            import tkinter.filedialog as tf
+            root=tkinter.Tk()
+            root.withdraw()
 
             fTyp = [('Okadai Timetable', '*.xlsx')]
-            iDir = ".//"
+            iDir = path.join(str(Path.home()), "Desktop")
 
             filename = tf.askopenfilename(filetypes=fTyp, initialdir=iDir)
-            # hantei = False
-
+        try:
             if filename == "":
                 print("The cancel butten was pushed.")
             else:
