@@ -8,7 +8,7 @@ Created on Fri Apr  6 12:43:13 2018
 
 import openpyxl as px
 import zenhan as zh
-from .cell_for_openpyxl import cell
+from cell_for_openpyxl import cell
 from datetime import datetime
 
 import os

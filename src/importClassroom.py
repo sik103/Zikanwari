@@ -7,8 +7,8 @@ Created on Fri Apr  6 12:51:03 2018
 """
 
 import openpyxl as px
-from .cell_for_openpyxl import cell
-from .getClassroom import GetClassroom
+from cell_for_openpyxl import cell
+from getClassroom import GetClassroom
 import time
 from datetime import datetime
 

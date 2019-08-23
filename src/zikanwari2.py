@@ -6,11 +6,11 @@ Created on Tue Feb 20 10:34:00 2018
 @author: crantu
 """
 
-from src.copy_tmp2forpdf import copy_tmp_to_forpdf
-from src.copy_input2temp import copy_input_to_temp
-from src.yesno_interface import yesno
-from src.importClassroom import importclassroom
-from src.check_excelfile import CheckExcelFile
+from copy_tmp2forpdf import copy_tmp_to_forpdf
+from copy_input2temp import copy_input_to_temp
+from yesno_interface import yesno
+from importClassroom import importclassroom
+from check_excelfile import CheckExcelFile
 
 cef = CheckExcelFile()
 

@@ -8,8 +8,8 @@ Created on Fri Jul 21 08:58:34 2017
 # import tkinter
 # from tkinter import filedialog as tkFileDialog
 import openpyxl as px
-from src.yesno_interface import yesno
-from src.check_excelfile import CheckExcelFile
+from yesno_interface import yesno
+from check_excelfile import CheckExcelFile
 
 cef = CheckExcelFile()
 

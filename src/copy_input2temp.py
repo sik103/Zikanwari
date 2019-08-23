@@ -7,7 +7,7 @@ Created on Fri Apr  6 12:56:20 2018
 """
 
 import openpyxl as px
-from .cell_for_openpyxl import cell
+from cell_for_openpyxl import cell
 
 
 def copy_input_to_temp(filename, gakki):
