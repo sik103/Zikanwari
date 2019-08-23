@@ -2,3 +2,4 @@ src/__pycache__
 files_for_debug/*
 *.xlsx
 env/
+.vscode/
