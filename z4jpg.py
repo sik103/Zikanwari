@@ -1,10 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Fri Jul 21 08:58:34 2017
-
-@author: okayama_univ
-"""
-
 # import tkinter
 # from tkinter import filedialog as tkFileDialog
 import openpyxl as px

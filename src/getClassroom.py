@@ -1,11 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Mon Mar 19 21:33:49 2018
-
-@author: wincrantu
-"""
-
 import zenhan as zh
 import pandas as pd
 from re import match

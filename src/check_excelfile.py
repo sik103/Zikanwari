@@ -1,11 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Fri Jun 15 13:10:45 2018
-
-@author: crantu
-"""
-
 import openpyxl as px
 import tkinter.filedialog as tf
 

@@ -1,12 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Fri Apr  6 12:59:26 2018
-
-@author: crantu
-"""
-
-
 def yesno(msg, y_n0=None):
     ans = None
     while ans is None:

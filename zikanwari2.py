@@ -1,11 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Tue Feb 20 10:34:00 2018
-
-@author: crantu
-"""
-
 from src.copy_tmp2forpdf import copy_tmp_to_forpdf
 from src.copy_input2temp import copy_input_to_temp
 from src.yesno_interface import yesno

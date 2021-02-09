@@ -1,11 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Fri Apr  6 12:43:13 2018
-
-@author: crantu
-"""
-
 import openpyxl as px
 import zenhan as zh
 from .cell_for_openpyxl import cell

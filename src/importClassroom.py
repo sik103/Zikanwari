@@ -1,11 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Fri Apr  6 12:51:03 2018
-
-@author: crantu
-"""
-
 import openpyxl as px
 from .cell_for_openpyxl import cell
 from .getClassroom import GetClassroom
