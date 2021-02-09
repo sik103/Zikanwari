@@ -18,8 +18,8 @@ class conv4jpg:
 
             if cef.openExcel():
                 self.filename = cef.filename
-                if yesno("Are you sure to change this file?:\n"+self.filename,
-                         True):
+                msg = f"Are you sure to change this file?: {self.filename}\n"
+                if yesno(msg, True):
                     self.copy_wordsheet()  # Ask sure or not to change the file
             else:
                 return 0
@@ -37,8 +37,8 @@ class conv4jpg:
 
             for i in range(5):
                 for j in range(24):
-                    ws4jpg[chr(i+67)+str(j+6)].value\
-                        = ws4pdf[chr(i+66)+str(j+5)].value
+                    ws4jpg[chr(i + 67) + str(j + 6)].value\
+                        = ws4pdf[chr(i + 66) + str(j + 5)].value
 
             ws4jpg["G3"].value = ws4pdf["F2"].value
             ws4jpg["E2"].value = ws4pdf["D1"].value

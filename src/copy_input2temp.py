@@ -20,14 +20,12 @@ def copy_input_to_temp(filename, gakki):
 
         for i in range(5):
             for j in range(8):  # Kougi-bango #write course number
-                ws2[cell(
-                    c=chr(i+66), i=2*(j+1))].value = ""
-                ws2[cell(c=chr(i+66), i=2*(j+1))].value =\
-                    ws3[cell(c=chr(i+67), i=8*j+1+dj)].value
-                ws2[cell(
-                    c=chr(i+66), i=2*(j+1)+1)].value = ""
-                ws2[cell(c=chr(i+66), i=2*(j+1)+1)].value =\
-                    ws3[cell(c=chr(i+67), i=8*j+2+dj)].value
+                ws2[cell(c=chr(i + 66), i=2 * (j + 1))].value = ""
+                ws2[cell(c=chr(i + 66), i=2 * (j + 1))].value =\
+                    ws3[cell(c=chr(i + 67), i=8 * j + 1 + dj)].value
+                ws2[cell(c=chr(i + 66), i=2 * (j + 1) + 1)].value = ""
+                ws2[cell(c=chr(i + 66), i=2 * (j + 1) + 1)].value =\
+                    ws3[cell(c=chr(i + 67), i=8 * j + 2 + dj)].value
         msg = "Successfully completed"
 
         wb.save(filename)

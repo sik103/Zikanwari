@@ -20,23 +20,23 @@ def copy_tmp_to_forpdf(filename, gakki):
 
         for i in range(66, 71):
             for j1 in range(2, 17, 2):  # Kougi-bango #write course number
-                r1 = round(3*j1/2+2)
+                r1 = round(3 * j1 / 2 + 2)
                 kogi_bango = ws2[cell(c=chr(i), i=j1)].value
                 if kogi_bango is None:
                     pass
-                elif type(kogi_bango) == str:
+                elif isinstance(kogi_bango, str):
                     kogi_bango0 = kogi_bango.split("　", 1)[0].strip()
                     ws1[cell(c=chr(i), i=r1)].value = ""
                     ws1[cell(c=chr(i), i=r1)].value =\
                         zh.z2h(text=kogi_bango0, mode=7)
-                elif type(kogi_bango) == int:
+                elif isinstance(kogi_bango, int):
                     kogi_bango0 = "{:06d}".format(kogi_bango)
                     ws1[cell(c=chr(i), i=r1)].value = ""
                     ws1[cell(c=chr(i), i=r1)].value =\
                         zh.z2h(text=kogi_bango0, mode=7)
 
             for j2 in range(3, 18, 2):  # write course title
-                r2 = round(((3*j2+7)/2)-1)
+                r2 = round(((3 * j2 + 7) / 2) - 1)
                 kogi_me = ws2[cell(c=chr(i), i=j2)].value
                 if kogi_me is not None:
                     kogi_me = kogi_me.replace("－", "-").\

@@ -10,9 +10,9 @@ def yesno(msg, y_n0=None):
         elif y_n0 is None:
             y_n = ""
         else:
-            raise
+            raise TypeError
 
-        ans0 = input(msg+"(y/n)"+y_n+":")
+        ans0 = input(msg + "(y/n)" + y_n + ":")
         if ans0 == "y":
             ans = True
         elif ans0 == "n":

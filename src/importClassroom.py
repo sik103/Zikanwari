@@ -20,7 +20,7 @@ def importclassroom(filename, debug_mode=False):
         for i1 in range(5):  # read data from the file
             for j1 in range(8):
                 cnobox[i1][j1] =\
-                    ws1[cell(c=chr(i1+66), i=3*(j1+2)-1)].value
+                    ws1[cell(c=chr(i1 + 66), i=3 * (j1 + 2) - 1)].value
 
         cnolist = []
         for i in range(5):  # table->list
@@ -28,7 +28,7 @@ def importclassroom(filename, debug_mode=False):
                 inlist = False
                 for k in cnolist:
                     if cnobox[i][j] == k \
-                      or not cnobox[i][j] or cnobox[i][j] == "-":
+                            or not cnobox[i][j] or cnobox[i][j] == "-":
                         inlist = True
                         break
                 if len(cnolist) == 0 and \
@@ -41,7 +41,7 @@ def importclassroom(filename, debug_mode=False):
         iii = len(cnolist)
         print("Downloading...")
         for ii, cnol in enumerate(cnolist):  # import html
-            print("{} of {}".format(ii+1, iii))
+            print("{} of {}".format(ii + 1, iii))
             croomlist.append(gc.getClassroom(cnol, debug_mode))
             time.sleep(5)
 
@@ -55,10 +55,9 @@ def importclassroom(filename, debug_mode=False):
         for i1 in range(5):  # write data to the file
             for j1 in range(8):
                 if cnobox[i1][j1]:
-                    ws1[cell(
-                        c=chr(i1+66), i=3*(j1+2))].value = ""
-                    ws1[cell(
-                        c=chr(i1+66), i=3*(j1+2))].value = cnobox[i1][j1]
+                    ws1[cell(c=chr(i1 + 66), i=3 * (j1 + 2))].value = ""
+                    ws1[cell(c=chr(i1 + 66), i=3 * (j1 + 2))].value =\
+                        cnobox[i1][j1]
 
         wb.save(filename)
         print("Successfully completed")
