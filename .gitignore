@@ -1,4 +1,12 @@
+# Cache files
 src/__pycache__
+
+# Files for debug
 files_for_debug/*
+
+# Excel files
 *.xlsx
+
+# Virtual Environment
 env/
+.env/
